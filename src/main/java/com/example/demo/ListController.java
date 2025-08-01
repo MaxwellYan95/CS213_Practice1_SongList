@@ -53,7 +53,7 @@ public class ListController {
         }
         reader.close();
     }
-    public Map<String, List<String>> getFileInfo() {
-        return fileInfo;
+    public boolean addDupFlag(String songLabel) {
+        return fileInfo.containsKey(songLabel);
     }
 }

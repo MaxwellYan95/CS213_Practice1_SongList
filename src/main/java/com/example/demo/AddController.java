@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,15 +29,14 @@ public class AddController {
     private Scene scene;
     private Parent root;
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
-    private Map<String, List<String>> fileInfo;
     public void adding(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         ListController controller = loader.getController();
-        fileInfo = controller.getFileInfo();
-        boolean duplicate = addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
-
+        String songLabel = (trimSpace(song.getText()) + " by " + trimSpace(artist.getText()));
+        controller.updateDisplay();
+        boolean duplicate = controller.addDupFlag(songLabel);
         if (duplicate) {
             Dialog<String> error = new Dialog<>();
             error.setTitle("Duplicate Song");
@@ -47,6 +47,7 @@ public class AddController {
                 error.close();
             });
         } else {
+            addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
             controller.updateDisplay();
             scene = new Scene(root);
             stage.setScene(scene);
@@ -54,20 +55,16 @@ public class AddController {
         }
     }
 
-    public boolean addToFile(String name, String artist, String album, String year) throws IOException {
+    public void addToFile(String name, String artist, String album, String year) throws IOException {
         String songLabel = (trimSpace(name) + " by " + trimSpace(artist));
         String newLine = songLabel + "|"
                 + trimSpace(name) + "|"
                 + trimSpace(artist) + "|"
                 + trimSpace(album) + "|"
                 + trimSpace(year);
-        if (fileInfo.containsKey(songLabel)) {
-            return true;
-        }
         FileWriter writer = new FileWriter(fileName, true);
         writer.append(newLine + "\n");
         writer.close();
-        return false;
     }
 
     public String trimSpace(String word) {

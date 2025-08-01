@@ -11,7 +11,10 @@ import java.io.IOException;
 public class SongLib extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("songList.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
+        Parent parent = loader.load();
+        ListController controller = loader.getController();
+        controller.updateDisplay();
         Scene scene = new Scene(parent);
         stage.setScene(scene);
         stage.show();
