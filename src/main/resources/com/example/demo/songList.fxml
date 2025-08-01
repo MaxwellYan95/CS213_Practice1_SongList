@@ -8,38 +8,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ListController">
    <children>
-      <ListView fx:id="songView" layoutX="57.0" layoutY="76.0" prefHeight="164.0" prefWidth="119.0" />
-      <Button layoutX="93.0" layoutY="286.0" mnemonicParsing="false" onAction="#goToAddWindow" text="Add">
+      <ListView fx:id="display" layoutX="112.0" layoutY="85.0" prefHeight="248.0" prefWidth="191.0" />
+      <Button layoutX="423.0" layoutY="94.0" mnemonicParsing="false" onAction="#goToAddWindow" text="Add">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button layoutX="267.0" layoutY="286.0" mnemonicParsing="false" text="Edit">
+      <Button layoutX="424.0" layoutY="167.0" mnemonicParsing="false" text="Edit">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button layoutX="435.0" layoutY="286.0" mnemonicParsing="false" text="Delete">
+      <Button layoutX="415.0" layoutY="247.0" mnemonicParsing="false" text="Delete">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Label layoutX="90.0" layoutY="30.0" text="Song">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <ListView fx:id="artistView" layoutX="176.0" layoutY="76.0" prefHeight="164.0" prefWidth="119.0" />
-      <Label layoutX="203.0" layoutY="30.0" text="Artists">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <ListView fx:id="albumView" layoutX="295.0" layoutY="76.0" prefHeight="164.0" prefWidth="119.0" />
-      <Label layoutX="322.0" layoutY="30.0" text="Album">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <ListView fx:id="yearView" layoutX="414.0" layoutY="76.0" prefHeight="164.0" prefWidth="119.0" />
-      <Label layoutX="450.0" layoutY="30.0" text="Year">
+      <Label layoutX="146.0" layoutY="42.0" text="Display List">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

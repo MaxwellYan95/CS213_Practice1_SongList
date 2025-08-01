@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application {
+public class SongLib extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("songList.fxml"));

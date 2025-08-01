@@ -13,23 +13,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ListController {
-    ArrayList<String> songs = new ArrayList<>();
-    ArrayList<String> artists = new ArrayList<>();
-    ArrayList<String> album = new ArrayList<>();
-    ArrayList<String> year = new ArrayList<>();
+    ArrayList<String> songLib = new ArrayList<>();
+    Map<String, List<String>> details = new HashMap<>();
     private Stage stage;
     private Scene scene;
     private Parent root;
     @FXML
-    private ListView songView;
-    @FXML
-    private ListView artistView;
-    @FXML
-    private ListView albumView;
-    @FXML
-    private ListView yearView;
+    private ListView display;
     public void goToAddWindow(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("addOption.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -37,23 +32,22 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-    public void addToList(String s, String a, String alb, String y) {
-        for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).equals(s) && artists.get(i).equals(a)) {
+    public void addToList(String name, String artist, String album, String year) {
+        String song = (name + " by " + artist);
+        for (int i = 0; i < songLib.size(); i++) {
+            if (songLib.get(i).equals(song)) {
                 return;
             }
         }
-        songs.add(s);
-        artists.add(a);
-        album.add(alb);
-        year.add(y);
-        ObservableList<String> songData = FXCollections.observableArrayList(songs);
-        songView.setItems(songData);
-        ObservableList<String> artistData = FXCollections.observableArrayList(artists);
-        artistView.setItems(artistData);
-        ObservableList<String> albumData = FXCollections.observableArrayList(album);
-        albumView.setItems(albumData);
-        ObservableList<String> yearData = FXCollections.observableArrayList(year);
-        yearView.setItems(yearData);
+        songLib.add(song);
+        List<String> info = new ArrayList<>();
+        info.add(name);
+        info.add(artist);
+        info.add(album);
+        info.add(year);
+        details.put(song, info);
+        ObservableList<String> songList = FXCollections.observableArrayList(songLib);
+        display.setItems(songList);
+
     }
 }
