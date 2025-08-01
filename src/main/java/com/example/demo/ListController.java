@@ -11,15 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ListController {
-    ArrayList<String> songLib = new ArrayList<>();
-    Map<String, List<String>> details = new HashMap<>();
+    private String fileName = "AllSongs.txt";
+    ArrayList<String> songs = new ArrayList<>();
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -32,22 +31,61 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-    public void addToList(String name, String artist, String album, String year) {
-        String song = (name + " by " + artist);
-        for (int i = 0; i < songLib.size(); i++) {
-            if (songLib.get(i).equals(song)) {
+    public void add(String name, String artist, String album, String year) {
+        String songLabel = (name + " by " + artist);
+        name = trimSpace(name);
+        artist = trimSpace(artist);
+        album = trimSpace(album);
+        year = trimSpace(year);
+
+        for (int i = 0; i < songs.size(); i++) {
+            if (songs.get(i).equals(songLabel)) {
                 return;
             }
         }
-        songLib.add(song);
+        songs.add(songLabel);
         List<String> info = new ArrayList<>();
         info.add(name);
         info.add(artist);
         info.add(album);
         info.add(year);
-        details.put(song, info);
-        ObservableList<String> songList = FXCollections.observableArrayList(songLib);
+        details.put(songLabel, info);
+        ObservableList<String> songList = FXCollections.observableArrayList(songs);
         display.setItems(songList);
+    }
 
+    public void updateDisplay() {
+
+    }
+
+    public String trimSpace(String word) {
+        int begin = 0;
+        int end = word.length()-1;
+        boolean isBegin = true;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) != ' ') {
+                if (isBegin == true) {
+                    begin = i;
+                    isBegin = false;
+                } else {
+                    end = i;
+                }
+            }
+        }
+        end = end + 1;
+        return word.substring(begin, end);
+    }
+
+    public Map<String, List<String>> readFile() throws FileNotFoundException{
+        Map<String, List<String>> fileInfo = new HashMap<>();
+        File obj = new File(fileName);
+        Scanner reader = new Scanner(obj);
+        while (reader.hasNextLine()) {
+            String data = reader.nextLine();
+            ArrayList<String> elements = new ArrayList<>();
+            elements.addAll(Arrays.asList(data.split("|")));
+            fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
+        }
+        return fileInfo;
     }
 }

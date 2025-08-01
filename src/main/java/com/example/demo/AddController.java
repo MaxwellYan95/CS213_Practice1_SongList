@@ -29,7 +29,7 @@ public class AddController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         ListController controller = loader.getController();
-        controller.addToList(song.getText(), artist.getText(), album.getText(), year.getText());
+        controller.add(song.getText(), artist.getText(), album.getText(), year.getText());
 
         scene = new Scene(root);
         stage.setScene(scene);
