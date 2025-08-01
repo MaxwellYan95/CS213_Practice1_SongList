@@ -13,12 +13,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
 public class ListController {
-    private String fileName = "AllSongs.txt";
-    ArrayList<String> songs = new ArrayList<>();
+    private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -31,31 +31,25 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-    public void add(String name, String artist, String album, String year) {
-        String songLabel = (name + " by " + artist);
-        name = trimSpace(name);
-        artist = trimSpace(artist);
-        album = trimSpace(album);
-        year = trimSpace(year);
-
-        for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).equals(songLabel)) {
-                return;
-            }
-        }
-        songs.add(songLabel);
-        List<String> info = new ArrayList<>();
-        info.add(name);
-        info.add(artist);
-        info.add(album);
-        info.add(year);
-        details.put(songLabel, info);
-        ObservableList<String> songList = FXCollections.observableArrayList(songs);
-        display.setItems(songList);
+    public void add(String name, String artist, String album, String year) throws IOException {
+        addToFile(name, artist, album, year);
+        updateDisplay();
     }
 
-    public void updateDisplay() {
+    public void addToFile(String name, String artist, String album, String year) throws IOException {
+        String songLabel = (name + " by " + artist);
+        String newLine = songLabel + "|" + trimSpace(name) + "|" + trimSpace(artist) + "|" + trimSpace(album) + "|" + trimSpace(year);
+        FileWriter writer = new FileWriter(fileName, true);
+        writer.append(newLine + "\n");
+        writer.close();
+    }
 
+    public void updateDisplay() throws FileNotFoundException {
+        Map<String, List<String>> fileInfo = readFile();
+        List<String> songs = new ArrayList<>(fileInfo.keySet());
+        Collections.sort(songs);
+        ObservableList<String> songList = FXCollections.observableArrayList(songs);
+        display.setItems(songList);
     }
 
     public String trimSpace(String word) {
@@ -86,6 +80,7 @@ public class ListController {
             elements.addAll(Arrays.asList(data.split("|")));
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
+        reader.close();
         return fileInfo;
     }
 }
