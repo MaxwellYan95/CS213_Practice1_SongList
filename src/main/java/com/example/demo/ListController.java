@@ -32,27 +32,6 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-    public boolean add(String name, String artist, String album, String year) throws IOException {
-        updateFileInfo();
-        boolean duplicate = addToFile(name, artist, album, year);
-        if (duplicate) {
-            return true;
-        }
-        updateDisplay();
-        return false;
-    }
-
-    public boolean addToFile(String name, String artist, String album, String year) throws IOException {
-        String songLabel = (trimSpace(name) + " by " + trimSpace(artist));
-        String newLine = songLabel + "|" + trimSpace(name) + "|" + trimSpace(artist) + "|" + trimSpace(album) + "|" + trimSpace(year);
-        if (fileInfo.containsKey(songLabel)) {
-            return true;
-        }
-        FileWriter writer = new FileWriter(fileName, true);
-        writer.append(newLine + "\n");
-        writer.close();
-        return false;
-    }
 
     public void updateDisplay() throws FileNotFoundException {
         updateFileInfo();
@@ -60,25 +39,6 @@ public class ListController {
         Collections.sort(songs);
         ObservableList<String> songList = FXCollections.observableArrayList(songs);
         display.setItems(songList);
-    }
-
-    public String trimSpace(String word) {
-        int begin = 0;
-        int end = word.length()-1;
-        boolean isBegin = true;
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != ' ') {
-                if (isBegin) {
-                    begin = i;
-                    isBegin = false;
-                } else {
-                    end = i;
-                }
-            }
-        }
-        end = end + 1;
-        System.out.println(end);
-        return word.substring(begin, end);
     }
 
     public void updateFileInfo() throws FileNotFoundException{
@@ -92,5 +52,8 @@ public class ListController {
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();
+    }
+    public Map<String, List<String>> getFileInfo() {
+        return fileInfo;
     }
 }
