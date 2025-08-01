@@ -19,6 +19,7 @@ import java.util.*;
 
 public class ListController {
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
+    private Map<String, List<String>> fileInfo;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -31,21 +32,30 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-    public void add(String name, String artist, String album, String year) throws IOException {
-        addToFile(name, artist, album, year);
+    public boolean add(String name, String artist, String album, String year) throws IOException {
+        updateFileInfo();
+        boolean duplicate = addToFile(name, artist, album, year);
+        if (duplicate) {
+            return true;
+        }
         updateDisplay();
+        return false;
     }
 
-    public void addToFile(String name, String artist, String album, String year) throws IOException {
+    public boolean addToFile(String name, String artist, String album, String year) throws IOException {
         String songLabel = (trimSpace(name) + " by " + trimSpace(artist));
         String newLine = songLabel + "|" + trimSpace(name) + "|" + trimSpace(artist) + "|" + trimSpace(album) + "|" + trimSpace(year);
+        if (fileInfo.containsKey(songLabel)) {
+            return true;
+        }
         FileWriter writer = new FileWriter(fileName, true);
         writer.append(newLine + "\n");
         writer.close();
+        return false;
     }
 
     public void updateDisplay() throws FileNotFoundException {
-        Map<String, List<String>> fileInfo = readFile();
+        updateFileInfo();
         List<String> songs = new ArrayList<>(fileInfo.keySet());
         Collections.sort(songs);
         ObservableList<String> songList = FXCollections.observableArrayList(songs);
@@ -71,8 +81,8 @@ public class ListController {
         return word.substring(begin, end);
     }
 
-    public Map<String, List<String>> readFile() throws FileNotFoundException{
-        Map<String, List<String>> fileInfo = new HashMap<>();
+    public void updateFileInfo() throws FileNotFoundException{
+        fileInfo = new HashMap<>();
         File obj = new File(fileName);
         Scanner reader = new Scanner(obj);
         while (reader.hasNextLine()) {
@@ -82,6 +92,5 @@ public class ListController {
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();
-        return fileInfo;
     }
 }

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -29,10 +30,20 @@ public class AddController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         ListController controller = loader.getController();
-        controller.add(song.getText(), artist.getText(), album.getText(), year.getText());
-
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        boolean duplicate = controller.add(song.getText(), artist.getText(), album.getText(), year.getText());
+        if (duplicate) {
+            Dialog<String> error = new Dialog<>();
+            error.setTitle("Duplicate Song");
+            error.setContentText("Either the song name or artist has to be different");
+            error.setContentText("Try Again");
+            error.showAndWait();
+            error.setOnCloseRequest((e) -> {
+                error.close();
+            });
+        } else {
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 }
