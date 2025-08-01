@@ -37,7 +37,7 @@ public class ListController {
     }
 
     public void addToFile(String name, String artist, String album, String year) throws IOException {
-        String songLabel = (name + " by " + artist);
+        String songLabel = (trimSpace(name) + " by " + trimSpace(artist));
         String newLine = songLabel + "|" + trimSpace(name) + "|" + trimSpace(artist) + "|" + trimSpace(album) + "|" + trimSpace(year);
         FileWriter writer = new FileWriter(fileName, true);
         writer.append(newLine + "\n");
@@ -58,7 +58,7 @@ public class ListController {
         boolean isBegin = true;
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) != ' ') {
-                if (isBegin == true) {
+                if (isBegin) {
                     begin = i;
                     isBegin = false;
                 } else {
@@ -67,6 +67,7 @@ public class ListController {
             }
         }
         end = end + 1;
+        System.out.println(end);
         return word.substring(begin, end);
     }
 
@@ -77,7 +78,7 @@ public class ListController {
         while (reader.hasNextLine()) {
             String data = reader.nextLine();
             ArrayList<String> elements = new ArrayList<>();
-            elements.addAll(Arrays.asList(data.split("|")));
+            elements.addAll(Arrays.asList(data.split("\\|")));
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();
