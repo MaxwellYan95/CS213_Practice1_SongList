@@ -33,7 +33,13 @@ public class ListController {
     }
     public boolean dupFlag(String songLabel) throws FileNotFoundException {
         updateDisplay();
-        return fileInfo.containsKey(songLabel);
+        for (String label: fileInfo.keySet()) {
+            boolean duplicate = label.toLowerCase().equals(songLabel.toLowerCase());
+            if (duplicate) {
+                return true;
+            }
+        }
+        return false;
     }
     public void selectListView(int index) throws FileNotFoundException {
         updateDisplay();
@@ -52,7 +58,7 @@ public class ListController {
     public void updateDisplay() throws FileNotFoundException {
         updateFileInfo();
         List<String> songs = new ArrayList<>(fileInfo.keySet());
-        Collections.sort(songs);
+        Collections.sort(songs, String.CASE_INSENSITIVE_ORDER);
         ObservableList<String> songList = FXCollections.observableArrayList(songs);
         display.setItems(songList);
     }

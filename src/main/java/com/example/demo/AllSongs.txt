@@ -1,6 +1,7 @@
-b by b|b|b||
-b by c|b|c||
-q by t|q|t||
 a by d|a|d||
 z by y|z|y||
 a by c|a|c||
+f by r|f|r||
+B by G|B|G||
+b by Y|b|Y||
+b by z|b|z||
