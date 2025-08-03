@@ -22,8 +22,12 @@ public class ListController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    private String selectSong;
     @FXML
     private ListView display;
+    @FXML
+    private ListView details;
     public void goToAddWindow(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("addOption.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -46,6 +50,8 @@ public class ListController {
         boolean outOfBounds = (index >= display.getItems().size());
         if (!outOfBounds) {
             display.getSelectionModel().select(index);
+            selectSong = (String) display.getItems().get(index);
+            updateDetails();
         }
     }
     public void selectListView(String element) throws FileNotFoundException {
@@ -53,6 +59,8 @@ public class ListController {
         boolean contained = display.getItems().contains(element);
         if (contained) {
             display.getSelectionModel().select(element);
+            selectSong = element;
+            updateDetails();
         }
     }
     public void updateDisplay() throws FileNotFoundException {
@@ -73,6 +81,10 @@ public class ListController {
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();
+    }
+    public void updateDetails() {
+        List<String> detailList = fileInfo.get(selectSong);
+        details.setItems(FXCollections.observableArrayList(detailList));
     }
 
 }

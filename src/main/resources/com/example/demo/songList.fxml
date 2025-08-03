@@ -8,20 +8,26 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ListController">
    <children>
-      <ListView fx:id="display" layoutX="112.0" layoutY="85.0" prefHeight="248.0" prefWidth="191.0" />
-      <Button layoutX="423.0" layoutY="94.0" mnemonicParsing="false" onAction="#goToAddWindow" text="Add">
+      <ListView fx:id="display" layoutX="35.0" layoutY="83.0" prefHeight="248.0" prefWidth="191.0" />
+      <Button layoutX="488.0" layoutY="95.0" mnemonicParsing="false" onAction="#goToAddWindow" text="Add">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button layoutX="424.0" layoutY="167.0" mnemonicParsing="false" text="Edit">
+      <Button layoutX="489.0" layoutY="168.0" mnemonicParsing="false" text="Edit">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button layoutX="415.0" layoutY="247.0" mnemonicParsing="false" text="Delete">
+      <Button layoutX="480.0" layoutY="248.0" mnemonicParsing="false" text="Delete">
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Label layoutX="146.0" layoutY="42.0" text="Display List">
+      <Label layoutX="99.0" layoutY="40.0" text="Songs">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <ListView fx:id="details" layoutX="260.0" layoutY="83.0" prefHeight="248.0" prefWidth="191.0" />
+      <Label layoutX="321.0" layoutY="40.0" text="Details">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
