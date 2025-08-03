@@ -1,8 +1,7 @@
-a by d|a|d||
-z by y|z|y||
-a by c|a|c||
-f by r|f|r||
-B by G|B|G||
-b by Y|b|Y||
-b by z|b|z||
-w by x|w|x||
+b by Y|b|Y
+b by z|b|z
+z by y|z|y
+w by x|w|x
+f by r|f|r
+a by d|a|d
+a by c|a|c

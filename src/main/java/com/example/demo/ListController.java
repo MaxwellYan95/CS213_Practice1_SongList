@@ -87,9 +87,21 @@ public class ListController implements Initializable {
         details.setItems(FXCollections.observableArrayList(detailList));
     }
 
-    public void delete() {
+    public void delete(ActionEvent event) throws IOException {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
         fileInfo.remove(selectSong);
+        FileWriter writer = new FileWriter(fileName);
+        for (String key: fileInfo.keySet()) {
+            String line = "" + key;
+            for (String info: fileInfo.get(key)) {
+                line += ("|" + info);
+            }
+            line += "\n";
+            writer.append(line);
+        }
+        writer.close();
+        updateDisplay();
+        firstSelect();
     }
 
     @Override
