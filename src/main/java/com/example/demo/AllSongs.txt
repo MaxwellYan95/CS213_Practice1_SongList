@@ -1,7 +1,2 @@
-b by Y|b|Y
-b by z|b|z
 z by y|z|y
-w by x|w|x
-f by r|f|r
-a by d|a|d
 a by c|a|c

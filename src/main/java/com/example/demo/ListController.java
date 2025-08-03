@@ -83,8 +83,11 @@ public class ListController implements Initializable {
     }
     public void updateDetails() {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
-        List<String> detailList = fileInfo.get(selectSong);
-        details.setItems(FXCollections.observableArrayList(detailList));
+        boolean contained = display.getItems().contains(selectSong);
+        if (contained) {
+            List<String> detailList = fileInfo.get(selectSong);
+            details.setItems(FXCollections.observableArrayList(detailList));
+        }
     }
 
     public void delete(ActionEvent event) throws IOException {
