@@ -1,10 +1,13 @@
 package com.example.demo;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,20 +17,21 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
-public class ListController {
+public class ListController implements Initializable {
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
     private Map<String, List<String>> fileInfo;
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    private String selectSong;
     @FXML
     private ListView display;
     @FXML
     private ListView details;
+    
     public void goToAddWindow(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("addOption.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -50,7 +54,6 @@ public class ListController {
         boolean outOfBounds = (index >= display.getItems().size());
         if (!outOfBounds) {
             display.getSelectionModel().select(index);
-            selectSong = (String) display.getItems().get(index);
             updateDetails();
         }
     }
@@ -59,7 +62,6 @@ public class ListController {
         boolean contained = display.getItems().contains(element);
         if (contained) {
             display.getSelectionModel().select(element);
-            selectSong = element;
             updateDetails();
         }
     }
@@ -83,8 +85,24 @@ public class ListController {
         reader.close();
     }
     public void updateDetails() {
+        String selectSong = (String) display.getSelectionModel().getSelectedItem();
+        System.out.println(selectSong);
         List<String> detailList = fileInfo.get(selectSong);
         details.setItems(FXCollections.observableArrayList(detailList));
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            updateDisplay();
+            display.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observableValue, Object o, Object t1) {
+                    updateDetails();
+                }
+            });
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
