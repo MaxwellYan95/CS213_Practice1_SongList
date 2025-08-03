@@ -49,6 +49,7 @@ public class AddController {
         } else {
             addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
             controller.updateDisplay();
+            controller.selectListView(songLabel);
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -82,7 +83,6 @@ public class AddController {
             }
         }
         end = end + 1;
-        System.out.println(end);
         return word.substring(begin, end);
     }
 }

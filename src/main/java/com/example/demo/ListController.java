@@ -56,4 +56,18 @@ public class ListController {
     public boolean addDupFlag(String songLabel) {
         return fileInfo.containsKey(songLabel);
     }
+
+    public void selectListView(int index) {
+        boolean outOfBounds = (index >= display.getItems().size());
+        if (!outOfBounds) {
+            display.getSelectionModel().select(index);
+        }
+    }
+
+    public void selectListView(String element) {
+        boolean contained = display.getItems().contains(element);
+        if (contained) {
+            display.getSelectionModel().select(element);
+        }
+    }
 }
