@@ -41,6 +41,8 @@ public class AddController {
             error.showAndWait();
         } else {
             addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
+            controller.updateFileInfo();
+            controller.updateDisplay();
             controller.selectListView(songLabel);
             scene = new Scene(root);
             stage.setScene(scene);

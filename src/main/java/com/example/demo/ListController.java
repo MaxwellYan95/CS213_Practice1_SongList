@@ -16,12 +16,14 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class ListController implements Initializable {
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
+    private File file = new File(fileName);
     private Map<String, List<String>> fileInfo;
     private Stage stage;
     private Scene scene;
@@ -40,7 +42,6 @@ public class ListController implements Initializable {
         stage.show();
     }
     public boolean dupFlag(String songLabel) throws FileNotFoundException {
-        updateDisplay();
         for (String label: fileInfo.keySet()) {
             boolean duplicate = label.toLowerCase().equals(songLabel.toLowerCase());
             if (duplicate) {
@@ -49,16 +50,14 @@ public class ListController implements Initializable {
         }
         return false;
     }
-    public void selectListView(int index) throws FileNotFoundException {
-        updateDisplay();
-        boolean outOfBounds = (index >= display.getItems().size());
-        if (!outOfBounds) {
-            display.getSelectionModel().select(index);
+    public void firstSelect() {
+        boolean empty = (0 == display.getItems().size());
+        if (!empty) {
+            display.getSelectionModel().select(0);
             updateDetails();
         }
     }
     public void selectListView(String element) throws FileNotFoundException {
-        updateDisplay();
         boolean contained = display.getItems().contains(element);
         if (contained) {
             display.getSelectionModel().select(element);
@@ -66,7 +65,6 @@ public class ListController implements Initializable {
         }
     }
     public void updateDisplay() throws FileNotFoundException {
-        updateFileInfo();
         List<String> songs = new ArrayList<>(fileInfo.keySet());
         Collections.sort(songs, String.CASE_INSENSITIVE_ORDER);
         ObservableList<String> songList = FXCollections.observableArrayList(songs);
@@ -74,8 +72,7 @@ public class ListController implements Initializable {
     }
     public void updateFileInfo() throws FileNotFoundException{
         fileInfo = new HashMap<>();
-        File obj = new File(fileName);
-        Scanner reader = new Scanner(obj);
+        Scanner reader = new Scanner(file);
         while (reader.hasNextLine()) {
             String data = reader.nextLine();
             ArrayList<String> elements = new ArrayList<>();
@@ -86,15 +83,21 @@ public class ListController implements Initializable {
     }
     public void updateDetails() {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
-        System.out.println(selectSong);
         List<String> detailList = fileInfo.get(selectSong);
         details.setItems(FXCollections.observableArrayList(detailList));
+    }
+
+    public void delete() {
+        String selectSong = (String) display.getSelectionModel().getSelectedItem();
+        fileInfo.remove(selectSong);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            updateFileInfo();
             updateDisplay();
+            firstSelect();
             display.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
                 @Override
                 public void changed(ObservableValue observableValue, Object o, Object t1) {
