@@ -14,7 +14,6 @@ public class SongLib extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
         Parent parent = loader.load();
         ListController controller = loader.getController();
-        controller.updateDisplay();
         controller.selectListView(0);
         Scene scene = new Scene(parent);
         stage.setScene(scene);

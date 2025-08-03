@@ -32,8 +32,7 @@ public class AddController {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         ListController controller = loader.getController();
         String songLabel = (trimSpace(song.getText()) + " by " + trimSpace(artist.getText()));
-        controller.updateDisplay();
-        boolean duplicate = controller.addDupFlag(songLabel);
+        boolean duplicate = controller.dupFlag(songLabel);
         if (duplicate) {
             Alert error = new Alert(Alert.AlertType.WARNING);
             error.setTitle("Duplicate Song");
@@ -42,7 +41,6 @@ public class AddController {
             error.showAndWait();
         } else {
             addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
-            controller.updateDisplay();
             controller.selectListView(songLabel);
             scene = new Scene(root);
             stage.setScene(scene);

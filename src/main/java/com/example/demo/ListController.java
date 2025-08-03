@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,7 +31,24 @@ public class ListController {
         stage.setScene(scene);
         stage.show();
     }
-
+    public boolean dupFlag(String songLabel) throws FileNotFoundException {
+        updateDisplay();
+        return fileInfo.containsKey(songLabel);
+    }
+    public void selectListView(int index) throws FileNotFoundException {
+        updateDisplay();
+        boolean outOfBounds = (index >= display.getItems().size());
+        if (!outOfBounds) {
+            display.getSelectionModel().select(index);
+        }
+    }
+    public void selectListView(String element) throws FileNotFoundException {
+        updateDisplay();
+        boolean contained = display.getItems().contains(element);
+        if (contained) {
+            display.getSelectionModel().select(element);
+        }
+    }
     public void updateDisplay() throws FileNotFoundException {
         updateFileInfo();
         List<String> songs = new ArrayList<>(fileInfo.keySet());
@@ -40,7 +56,6 @@ public class ListController {
         ObservableList<String> songList = FXCollections.observableArrayList(songs);
         display.setItems(songList);
     }
-
     public void updateFileInfo() throws FileNotFoundException{
         fileInfo = new HashMap<>();
         File obj = new File(fileName);
@@ -53,21 +68,5 @@ public class ListController {
         }
         reader.close();
     }
-    public boolean addDupFlag(String songLabel) {
-        return fileInfo.containsKey(songLabel);
-    }
 
-    public void selectListView(int index) {
-        boolean outOfBounds = (index >= display.getItems().size());
-        if (!outOfBounds) {
-            display.getSelectionModel().select(index);
-        }
-    }
-
-    public void selectListView(String element) {
-        boolean contained = display.getItems().contains(element);
-        if (contained) {
-            display.getSelectionModel().select(element);
-        }
-    }
 }
