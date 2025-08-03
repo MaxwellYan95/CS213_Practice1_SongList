@@ -6,15 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AddController {
     @FXML
@@ -38,14 +35,11 @@ public class AddController {
         controller.updateDisplay();
         boolean duplicate = controller.addDupFlag(songLabel);
         if (duplicate) {
-            Dialog<String> error = new Dialog<>();
+            Alert error = new Alert(Alert.AlertType.WARNING);
             error.setTitle("Duplicate Song");
             error.setContentText("Either the song name or artist has to be different");
             error.setContentText("Try Again");
             error.showAndWait();
-            error.setOnCloseRequest((e) -> {
-                error.close();
-            });
         } else {
             addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
             controller.updateDisplay();
