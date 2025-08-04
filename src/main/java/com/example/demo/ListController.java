@@ -42,11 +42,20 @@ public class ListController implements Initializable {
         stage.show();
     }
     public void goToEditWindow(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("editOption.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (details.getItems().size() == 0) {
+
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("editOption.fxml"));
+            root = loader.load();
+            EditController controller = loader.getController();
+            String key = (String) display.getSelectionModel().getSelectedItem();
+            List<String> value = fileInfo.get(key);
+            controller.setEditTexts(value.get(0), value.get(1), value.get(2), value.get(3));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     public boolean dupFlag(String songLabel) throws FileNotFoundException {
         for (String label: fileInfo.keySet()) {
@@ -84,6 +93,10 @@ public class ListController implements Initializable {
             String data = reader.nextLine();
             ArrayList<String> elements = new ArrayList<>();
             elements.addAll(Arrays.asList(data.split("\\|")));
+            if (elements.size() >= 3) {
+                elements.add("");
+                elements.add("");
+            }
             fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();

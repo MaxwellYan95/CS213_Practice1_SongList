@@ -13,7 +13,7 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button layoutX="489.0" layoutY="168.0" mnemonicParsing="false" text="Edit">
+      <Button layoutX="489.0" layoutY="168.0" mnemonicParsing="false" onAction="#goToEditWindow" text="Edit">
          <font>
             <Font size="18.0" />
          </font></Button>
