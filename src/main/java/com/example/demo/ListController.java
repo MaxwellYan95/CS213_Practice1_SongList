@@ -87,6 +87,8 @@ public class ListController implements Initializable {
         if (contained) {
             List<String> detailList = fileInfo.get(selectSong);
             details.setItems(FXCollections.observableArrayList(detailList));
+        } else {
+            details.setItems(FXCollections.observableArrayList(new ArrayList<>()));
         }
     }
 
