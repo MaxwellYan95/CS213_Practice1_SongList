@@ -25,6 +25,7 @@ public class ListController extends SongLib implements Initializable {
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
     private File file = new File(fileName);
     private Map<String, List<String>> songInfo;
+    private Map<String, Integer> songYear;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -75,16 +76,16 @@ public class ListController extends SongLib implements Initializable {
     }
     public void initializeSongInfo() throws FileNotFoundException{
         songInfo = new HashMap<>();
+        songYear = new HashMap<>();
         Scanner reader = new Scanner(file);
         while (reader.hasNextLine()) {
             String data = reader.nextLine();
             ArrayList<String> elements = new ArrayList<>();
             elements.addAll(Arrays.asList(data.split("\\|")));
-            if (elements.size() >= 3) {
-                elements.add("");
-                elements.add("");
+            if (isNumber(elements.get(4))) {
+                songYear.put(elements.get(0), Integer.parseInt(elements.get(4)));
             }
-            songInfo.put(elements.get(0), elements.subList(1, elements.size()));
+            songInfo.put(elements.get(0), elements.subList(1, 4));
         }
         reader.close();
     }
@@ -98,7 +99,12 @@ public class ListController extends SongLib implements Initializable {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
         boolean contained = display.getItems().contains(selectSong);
         if (contained) {
-            List<String> detailList = songInfo.get(selectSong);
+            List<String> detailList = new ArrayList<>();
+            detailList.addAll(songInfo.get(selectSong));
+            boolean hasYear = songYear.containsKey(selectSong);
+            if (hasYear) {
+                detailList.add(songYear.get(selectSong) + "");
+            }
             details.setItems(FXCollections.observableArrayList(detailList));
         } else {
             details.setItems(FXCollections.observableArrayList(new ArrayList<>()));
@@ -111,7 +117,12 @@ public class ListController extends SongLib implements Initializable {
             for (String info: songInfo.get(key)) {
                 line += ("|" + info);
             }
-            line += "\n";
+            if (songYear.containsKey(key)) {
+                line += ("|" + songYear.get(key));
+            } else {
+                line += "|";
+            }
+            line += "|*\n";
             writer.append(line);
         }
         writer.close();
@@ -120,17 +131,20 @@ public class ListController extends SongLib implements Initializable {
     public void addSong(String name, String artist, String album, String year) throws IOException {
         String songLabel = convertSongLabel(name, artist);
         ArrayList<String> values = new ArrayList<>();
-        values.addAll(Arrays.asList(name, artist, album, year));
+        values.addAll(Arrays.asList(name, artist, album));
         songInfo.put(songLabel, values);
+        if (isNumber(year)) {
+            songYear.put(songLabel, Integer.parseInt(year));
+        }
         updateFile();
         updateDisplay();
         display.getSelectionModel().select(songLabel);
     }
-    public void editSong(String songLabel, String name, String artist, String album, String year) {
-
-    }
     public void deleteSongInfo(String songLabel) {
         songInfo.remove(songLabel);
+        if (songYear.containsKey(songLabel)) {
+            songYear.remove(songLabel);
+        }
     }
     public void deleteSong(ActionEvent event) throws IOException {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
