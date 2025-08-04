@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class AddController {
+public class AddController extends SongLib {
     @FXML
     private TextField song;
     @FXML
@@ -31,7 +31,7 @@ public class AddController {
         root = loader.load();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         ListController controller = loader.getController();
-        String songLabel = (trimSpace(song.getText()) + " by " + trimSpace(artist.getText()));
+        String songLabel = convertSongLabel(song.getText(), artist.getText());
         boolean duplicate = controller.dupFlag(songLabel);
         if (duplicate) {
             Alert error = new Alert(Alert.AlertType.WARNING);
@@ -51,7 +51,7 @@ public class AddController {
     }
 
     public void addToFile(String name, String artist, String album, String year) throws IOException {
-        String songLabel = (trimSpace(name) + " by " + trimSpace(artist));
+        String songLabel = convertSongLabel(name, artist);
         String newLine = songLabel + "|"
                 + trimSpace(name) + "|"
                 + trimSpace(artist) + "|"
@@ -62,21 +62,4 @@ public class AddController {
         writer.close();
     }
 
-    public String trimSpace(String word) {
-        int begin = 0;
-        int end = word.length()-1;
-        boolean isBegin = true;
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != ' ') {
-                if (isBegin) {
-                    begin = i;
-                    isBegin = false;
-                } else {
-                    end = i;
-                }
-            }
-        }
-        end = end + 1;
-        return word.substring(begin, end);
-    }
 }
