@@ -41,6 +41,13 @@ public class ListController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    public void goToEditWindow(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("editOption.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
     public boolean dupFlag(String songLabel) throws FileNotFoundException {
         for (String label: fileInfo.keySet()) {
             boolean duplicate = label.toLowerCase().equals(songLabel.toLowerCase());
