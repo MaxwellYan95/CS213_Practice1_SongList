@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class ListController implements Initializable {
+public class ListController extends SongLib implements Initializable {
     private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
     private File file = new File(fileName);
-    private Map<String, List<String>> fileInfo;
+    private Map<String, List<String>> songInfo;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -49,7 +49,7 @@ public class ListController implements Initializable {
             root = loader.load();
             EditController controller = loader.getController();
             String key = (String) display.getSelectionModel().getSelectedItem();
-            List<String> value = fileInfo.get(key);
+            List<String> value = songInfo.get(key);
             controller.setEditTexts(value.get(0), value.get(1), value.get(2), value.get(3));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -58,7 +58,7 @@ public class ListController implements Initializable {
         }
     }
     public boolean dupFlag(String songLabel) throws FileNotFoundException {
-        for (String label: fileInfo.keySet()) {
+        for (String label: songInfo.keySet()) {
             boolean duplicate = label.toLowerCase().equals(songLabel.toLowerCase());
             if (duplicate) {
                 return true;
@@ -80,14 +80,8 @@ public class ListController implements Initializable {
             updateDetails();
         }
     }
-    public void updateDisplay() throws FileNotFoundException {
-        List<String> songs = new ArrayList<>(fileInfo.keySet());
-        Collections.sort(songs, String.CASE_INSENSITIVE_ORDER);
-        ObservableList<String> songList = FXCollections.observableArrayList(songs);
-        display.setItems(songList);
-    }
-    public void updateFileInfo() throws FileNotFoundException{
-        fileInfo = new HashMap<>();
+    public void initializeSongInfo() throws FileNotFoundException{
+        songInfo = new HashMap<>();
         Scanner reader = new Scanner(file);
         while (reader.hasNextLine()) {
             String data = reader.nextLine();
@@ -97,34 +91,53 @@ public class ListController implements Initializable {
                 elements.add("");
                 elements.add("");
             }
-            fileInfo.put(elements.get(0), elements.subList(1, elements.size()));
+            songInfo.put(elements.get(0), elements.subList(1, elements.size()));
         }
         reader.close();
+    }
+    public void updateDisplay() throws FileNotFoundException {
+        List<String> songs = new ArrayList<>(songInfo.keySet());
+        Collections.sort(songs, String.CASE_INSENSITIVE_ORDER);
+        ObservableList<String> songList = FXCollections.observableArrayList(songs);
+        display.setItems(songList);
     }
     public void updateDetails() {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
         boolean contained = display.getItems().contains(selectSong);
         if (contained) {
-            List<String> detailList = fileInfo.get(selectSong);
+            List<String> detailList = songInfo.get(selectSong);
             details.setItems(FXCollections.observableArrayList(detailList));
         } else {
             details.setItems(FXCollections.observableArrayList(new ArrayList<>()));
         }
     }
-
-    public void delete(ActionEvent event) throws IOException {
-        String selectSong = (String) display.getSelectionModel().getSelectedItem();
-        fileInfo.remove(selectSong);
+    public void updateFile() throws IOException {
         FileWriter writer = new FileWriter(fileName);
-        for (String key: fileInfo.keySet()) {
+        for (String key: songInfo.keySet()) {
             String line = "" + key;
-            for (String info: fileInfo.get(key)) {
+            for (String info: songInfo.get(key)) {
                 line += ("|" + info);
             }
             line += "\n";
             writer.append(line);
         }
         writer.close();
+    }
+
+    public void addSong(String name, String artist, String album, String year) throws IOException {
+        String songLabel = convertSongLabel(name, artist);
+        ArrayList<String> values = new ArrayList<>();
+        values.addAll(Arrays.asList(name, artist, album, year));
+        songInfo.put(songLabel, values);
+        updateFile();
+        updateDisplay();
+        selectListView(songLabel);
+    }
+
+    public void deleteSong(ActionEvent event) throws IOException {
+        String selectSong = (String) display.getSelectionModel().getSelectedItem();
+        songInfo.remove(selectSong);
+        updateFile();
         updateDisplay();
         firstSelect();
     }
@@ -132,7 +145,7 @@ public class ListController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            updateFileInfo();
+            initializeSongInfo();
             updateDisplay();
             firstSelect();
             display.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {

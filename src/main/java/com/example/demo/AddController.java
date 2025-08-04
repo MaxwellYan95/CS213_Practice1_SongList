@@ -40,26 +40,11 @@ public class AddController extends SongLib {
             error.setContentText("Try Again");
             error.showAndWait();
         } else {
-            addToFile(song.getText(), artist.getText(), album.getText(), year.getText());
-            controller.updateFileInfo();
-            controller.updateDisplay();
-            controller.selectListView(songLabel);
+            controller.addSong(song.getText(), artist.getText(), album.getText(), year.getText());
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         }
-    }
-
-    public void addToFile(String name, String artist, String album, String year) throws IOException {
-        String songLabel = convertSongLabel(name, artist);
-        String newLine = songLabel + "|"
-                + trimSpace(name) + "|"
-                + trimSpace(artist) + "|"
-                + trimSpace(album) + "|"
-                + trimSpace(year);
-        FileWriter writer = new FileWriter(fileName, true);
-        writer.append(newLine + "\n");
-        writer.close();
     }
 
 }
