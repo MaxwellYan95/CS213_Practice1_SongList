@@ -25,7 +25,6 @@ public class AddController extends SongLib {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
     public void adding(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
         root = loader.load();

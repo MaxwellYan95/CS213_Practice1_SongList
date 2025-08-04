@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -20,6 +21,9 @@ public class EditController extends SongLib {
     private TextField album;
     @FXML
     private TextField year;
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     public void setEditTexts(String name, String artist, String album, String year) {
         this.name.setText(name);
         this.artist.setText(artist);
@@ -28,15 +32,23 @@ public class EditController extends SongLib {
     }
     public void edit(ActionEvent event) throws IOException {
         String songLabel = convertSongLabel(name.getText(), artist.getText());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("songList"));
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Parent parent = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        root = loader.load();
         ListController controller = loader.getController();
+        // deletes the old songLabel, this
+        // allows you to edit the current
+        // songLabel without triggering a
+        // duplicate error
+        controller.deleteSongInfo(songLabel);
         boolean duplicate = controller.dupFlag(songLabel);
         if (duplicate) {
 
         } else {
-
+            controller.addSong(name.getText(), artist.getText(), album.getText(), year.getText());
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 }

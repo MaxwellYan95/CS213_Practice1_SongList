@@ -73,13 +73,6 @@ public class ListController extends SongLib implements Initializable {
             updateDetails();
         }
     }
-    public void selectListView(String element) throws FileNotFoundException {
-        boolean contained = display.getItems().contains(element);
-        if (contained) {
-            display.getSelectionModel().select(element);
-            updateDetails();
-        }
-    }
     public void initializeSongInfo() throws FileNotFoundException{
         songInfo = new HashMap<>();
         Scanner reader = new Scanner(file);
@@ -131,17 +124,21 @@ public class ListController extends SongLib implements Initializable {
         songInfo.put(songLabel, values);
         updateFile();
         updateDisplay();
-        selectListView(songLabel);
+        display.getSelectionModel().select(songLabel);
     }
+    public void editSong(String songLabel, String name, String artist, String album, String year) {
 
+    }
+    public void deleteSongInfo(String songLabel) {
+        songInfo.remove(songLabel);
+    }
     public void deleteSong(ActionEvent event) throws IOException {
         String selectSong = (String) display.getSelectionModel().getSelectedItem();
-        songInfo.remove(selectSong);
+        deleteSongInfo(selectSong);
         updateFile();
         updateDisplay();
         firstSelect();
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
