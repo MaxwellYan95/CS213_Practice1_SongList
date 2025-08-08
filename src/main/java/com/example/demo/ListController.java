@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
@@ -44,7 +45,10 @@ public class ListController extends SongLib implements Initializable {
     }
     public void goToEditWindow(ActionEvent event) throws IOException {
         if (details.getItems().size() == 0) {
-
+            Alert error = new Alert(Alert.AlertType.WARNING);
+            error.setTitle("No Songs");
+            error.setContentText("There are no songs to edit. Try again.");
+            error.showAndWait();
         } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("editOption.fxml"));
             root = loader.load();

@@ -46,8 +46,7 @@ public class EditController extends SongLib {
         if (duplicate) {
             Alert error = new Alert(Alert.AlertType.WARNING);
             error.setTitle("Duplicate Song");
-            error.setContentText("Either the song name or artist has to be different");
-            error.setContentText("Try Again");
+            error.setContentText("Either the song name or artist has to be different. Try again");
             error.showAndWait();
         } else {
             controller.addSong(name.getText(), artist.getText(), album.getText(), year.getText());
