@@ -51,6 +51,11 @@ public class ListController extends SongLib implements Initializable {
             EditController controller = loader.getController();
             String key = (String) display.getSelectionModel().getSelectedItem();
             List<String> value = songInfo.get(key);
+            if (!songYear.containsKey(key)) {
+                value.add("");
+            } else {
+                value.add("" + songYear.get(key));
+            }
             controller.setEditTexts(value.get(0), value.get(1), value.get(2), value.get(3));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);

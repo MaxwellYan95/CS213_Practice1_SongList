@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -43,7 +44,11 @@ public class EditController extends SongLib {
         controller.deleteSongInfo(songLabel);
         boolean duplicate = controller.dupFlag(songLabel);
         if (duplicate) {
-
+            Alert error = new Alert(Alert.AlertType.WARNING);
+            error.setTitle("Duplicate Song");
+            error.setContentText("Either the song name or artist has to be different");
+            error.setContentText("Try Again");
+            error.showAndWait();
         } else {
             controller.addSong(name.getText(), artist.getText(), album.getText(), year.getText());
             scene = new Scene(root);
