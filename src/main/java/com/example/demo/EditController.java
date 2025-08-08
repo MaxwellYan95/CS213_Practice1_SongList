@@ -1,3 +1,4 @@
+// Maxwell Yan
 package com.example.demo;
 
 import javafx.event.ActionEvent;
@@ -26,11 +27,15 @@ public class EditController extends SongLib {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private String oldSongLabel = "";
     public void setEditTexts(String name, String artist, String album, String year) {
         this.name.setText(name);
         this.artist.setText(artist);
         this.album.setText(album);
         this.year.setText(year);
+
+        // keeps tracks of old song label
+        oldSongLabel = convertSongLabel(name, artist);
     }
     public void edit(ActionEvent event) throws IOException {
         String songLabel = convertSongLabel(name.getText(), artist.getText());
@@ -42,13 +47,12 @@ public class EditController extends SongLib {
         // allows you to edit the current
         // songLabel without triggering a
         // duplicate error
-        controller.deleteSongInfo(songLabel);
+        controller.deleteSongInfo(oldSongLabel);
         boolean duplicate = controller.dupFlag(songLabel);
         boolean empty = (name.getText().trim().equals("")) || (artist.getText().trim().equals(""));
         if (duplicate) {
             Alert error = new Alert(Alert.AlertType.WARNING);
-            error.setTitle("Duplicate Song");
-            error.setContentText("Either the song name or artist has to be different. Try again");
+            error.setContentText("You are copying the name and artist from another song. Try again");
             error.showAndWait();
         } else if (empty) {
             Alert error = new Alert(Alert.AlertType.WARNING);

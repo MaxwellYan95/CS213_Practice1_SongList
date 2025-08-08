@@ -1,6 +1,2 @@
-r by t|r|t|||*
-b by g|b|g|098|6|*
-d by b|d|b|45345|3454|*
-l by p|l|p|||*
-y by u|y|u|||*
-a by b|a|b|45345|3454|*
+a by 4|a|4|346||*
+a by b|a|b|564|345|*
