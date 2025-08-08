@@ -47,6 +47,7 @@ public class SongLib extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("songList.fxml"));
         Parent parent = loader.load();
         Scene scene = new Scene(parent);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

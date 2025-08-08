@@ -41,6 +41,7 @@ public class ListController extends SongLib implements Initializable {
         root = FXMLLoader.load(getClass().getResource("addOption.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
@@ -64,6 +65,7 @@ public class ListController extends SongLib implements Initializable {
             controller.setEditTexts(value.get(0), value.get(1), value.get(2), value.get(3));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         }
