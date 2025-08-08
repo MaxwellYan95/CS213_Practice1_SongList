@@ -9,25 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SongLib extends Application {
-    public String trimSpace(String word) {
-        int begin = 0;
-        int end = word.length()-1;
-        boolean isBegin = true;
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != ' ') {
-                if (isBegin) {
-                    begin = i;
-                    isBegin = false;
-                } else {
-                    end = i;
-                }
-            }
-        }
-        end = end + 1;
-        return word.substring(begin, end);
-    }
     public String convertSongLabel(String name, String artist) {
-        return (trimSpace(name) + " by " + trimSpace(artist));
+        return (name.trim() + " by " + artist.trim());
     }
     public boolean isNumber(String year) {
         if (year.length() == 0) {
