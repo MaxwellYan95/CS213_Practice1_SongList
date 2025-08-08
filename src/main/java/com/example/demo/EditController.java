@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -49,10 +50,14 @@ public class EditController extends SongLib {
             error.setContentText("Either the song name or artist has to be different. Try again");
             error.showAndWait();
         } else {
-            controller.addSong(name.getText(), artist.getText(), album.getText(), year.getText());
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setContentText("Are you sure?");
+            if (confirm.showAndWait().get() == ButtonType.OK) {
+                controller.addSong(name.getText(), artist.getText(), album.getText(), year.getText());
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
         }
     }
 }

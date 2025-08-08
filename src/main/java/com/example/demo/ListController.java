@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
@@ -156,11 +157,15 @@ public class ListController extends SongLib implements Initializable {
         }
     }
     public void deleteSong(ActionEvent event) throws IOException {
-        String selectSong = (String) display.getSelectionModel().getSelectedItem();
-        deleteSongInfo(selectSong);
-        updateFile();
-        updateDisplay();
-        firstSelect();
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setContentText("Are you sure?");
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+            String selectSong = (String) display.getSelectionModel().getSelectedItem();
+            deleteSongInfo(selectSong);
+            updateFile();
+            updateDisplay();
+            firstSelect();
+        }
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
