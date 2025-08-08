@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.*;
 
 public class ListController extends SongLib implements Initializable {
-    private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/java/com/example/demo/AllSongs.txt";
+    private String fileName = "/Users/maxyanyan/Desktop/CS213_Practice_1/src/main/resources/com/example/demo/AllSongs.txt";
     private File file = new File(fileName);
     private Map<String, List<String>> songInfo;
     private Map<String, Integer> songYear;
